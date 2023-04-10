@@ -3,10 +3,16 @@ package xyz.cyanin.securityapp.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -17,6 +23,8 @@ public class SecurityConfig {
         // 2. Form 로그인 설정
         http.formLogin().
         loginPage("/loginForm")
+        .usernameParameter("username") // 디폴트 네임
+        .passwordParameter("password")
         .loginProcessingUrl("/login") // post + x-www-FormUrlEncoded
         .defaultSuccessUrl("/") // 기억된 페이지가 없으면 해당 페이지로 이동
         .successHandler((req, resp, authentication)->{
@@ -28,10 +36,10 @@ public class SecurityConfig {
         
         // 3. 인증, 권한 필터 설정
         http.authorizeRequests(
-            authorize -> authorize.antMatchers("/users/**")
-            .authenticated().antMatchers("/admin/**").hasRole("admin")
+            authorize -> authorize.antMatchers("/users/**").authenticated()
             .antMatchers("/manager/**")
             .access("hasRole('admin') or hasRole('manager')")
+            .antMatchers("/admin/**").hasRole("admin")
             .anyRequest().permitAll()
         );
         
