@@ -6,7 +6,6 @@ import xyz.cyanin.securityapp.core.util.MyDateUtils;
 import xyz.cyanin.securityapp.model.User;
 
 public class UserResponse {
-
     @Getter
     @Setter
     public static class JoinDTO {
@@ -15,7 +14,6 @@ public class UserResponse {
         private String email;
         private String role;
         private String createdAt;
-
 
         public JoinDTO(User user) {
             this.id = user.getId();

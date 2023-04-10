@@ -14,6 +14,7 @@ spring:
     console:
       enabled: true
   jpa:
+    open-in-view: false # jpa 학습시 true로 설정 DTO 미사용
     hibernate:
       ddl-auto: create
     show-sql: true

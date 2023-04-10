@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import xyz.cyanin.securityapp.dto.UserRequest;
+import xyz.cyanin.securityapp.dto.UserResponse;
+import xyz.cyanin.securityapp.dto.UserResponse.JoinDTO;
 import xyz.cyanin.securityapp.model.User;
 import xyz.cyanin.securityapp.model.UserRepository;
 
@@ -24,10 +26,11 @@ public class UserService {
     // 5. ResponseDTO 응답하기
 
     @Transactional
-    public User 회원가입(UserRequest.JoinDTO joinDTO){ // 내부적인 프로세스 통신이면 한글로 써도 문제 없음
+    public JoinDTO 회원가입(UserRequest.JoinDTO joinDTO){ // 내부적인 프로세스 통신이면 한글로 써도 문제 없음
         String rawPassword = joinDTO.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword); // password는 60바이트 length 60!
         joinDTO.setPassword(encPassword);
-        return userRepository.save(joinDTO.toEntity()); // 
+        User userPS = userRepository.save(joinDTO.toEntity());
+        return new UserResponse.JoinDTO(userPS); // 
     }
 }
