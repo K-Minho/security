@@ -29,9 +29,11 @@ public class SecurityConfig {
         .defaultSuccessUrl("/") // 기억된 페이지가 없으면 해당 페이지로 이동
         .successHandler((req, resp, authentication)->{
             System.out.println("디버그 : 로그인 완료"); // 본 코드에 디버그 적을것
+            resp.sendRedirect("/");
         }) // 성공시 로그등을 남김
         .failureHandler((req, resp, ex)->{
             System.out.println("디버그 : 로그인 실패" + ex.getMessage());
+            resp.sendRedirect("/");
         }); // 실패시 로그등을 남김
         
         // 3. 인증, 권한 필터 설정

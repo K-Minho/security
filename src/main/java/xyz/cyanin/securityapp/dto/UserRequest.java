@@ -18,7 +18,7 @@ public class UserRequest {
 
         // jpa hibernate 는 insert 해야 하는 것들은 entity 가 필요함
         public User toEntity() {
-            return User.builder().username(username).password(password).email(email).role(role).build();
+            return User.builder().username(username).password(password).email(email).role(role).status(true).build();
         }
     }
 }
