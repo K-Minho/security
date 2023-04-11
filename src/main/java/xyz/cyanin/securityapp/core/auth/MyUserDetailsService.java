@@ -26,9 +26,8 @@ public class MyUserDetailsService implements UserDetailsService {
         if(userOP.isPresent()){
             return new MyUserDetails(userOP.get());
         } else {
-
+            return null; 
         }
-        return null; 
     }
 
 

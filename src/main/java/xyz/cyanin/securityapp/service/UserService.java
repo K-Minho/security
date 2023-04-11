@@ -1,12 +1,17 @@
 package xyz.cyanin.securityapp.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import xyz.cyanin.securityapp.core.advice.MyExceptionAdvice;
+import xyz.cyanin.securityapp.core.jwt.MyJwtProvider;
 import xyz.cyanin.securityapp.dto.UserRequest;
 import xyz.cyanin.securityapp.dto.UserResponse;
+import xyz.cyanin.securityapp.dto.UserRequest.LoginDTO;
 import xyz.cyanin.securityapp.dto.UserResponse.JoinDTO;
 import xyz.cyanin.securityapp.model.User;
 import xyz.cyanin.securityapp.model.UserRepository;
@@ -31,5 +36,17 @@ public class UserService {
         joinDTO.setPassword(encPassword);
         User userPS = userRepository.save(joinDTO.toEntity());
         return new UserResponse.JoinDTO(userPS); // 
+    }
+
+
+    public String 로그인(UserRequest.LoginDTO loginDTO) {
+        Optional<User> userOP = userRepository.findByUsername(loginDTO.getUsername());
+        User userPS = userOP.get();
+        if (passwordEncoder.matches(loginDTO.getPassword(), userPS.getPassword())) {
+            String jwt = MyJwtProvider.create(userPS);
+            return MyJwtProvider.TOKEN_PREFIX + jwt;
+        } else {
+            throw new RuntimeException("fail to create token");
+        }
     }
 }
