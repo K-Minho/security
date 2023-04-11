@@ -21,7 +21,7 @@ public class MyUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { // 인가가 필요할때의 권한(역할) 체크
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(()-> user.getRole());
+        authorities.add(()-> "ROLE_" + user.getRole());
         return authorities;
     }
 

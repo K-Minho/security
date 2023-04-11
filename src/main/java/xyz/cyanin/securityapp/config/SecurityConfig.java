@@ -35,7 +35,7 @@ public class SecurityConfig {
             System.out.println("디버그 : 로그인 실패" + ex.getMessage());
             resp.sendRedirect("/");
         }); // 실패시 로그등을 남김
-        
+
         // 3. 인증, 권한 필터 설정
         http.authorizeRequests(
             authorize -> authorize.antMatchers("/users/**").authenticated()
