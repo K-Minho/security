@@ -1,5 +1,6 @@
 package xyz.cyanin.securityapp.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ import xyz.cyanin.securityapp.service.UserService;
 @RequiredArgsConstructor
 public class HelloController {
 
+    @Value("${meta.name}")
+    private String name;
+
     private final UserService userService;
 
     @GetMapping("/users/{id}")
@@ -30,7 +34,7 @@ public class HelloController {
     
     @GetMapping("/")
     public ResponseEntity<?> hello() {
-        return ResponseEntity.ok().body("hello");
+        return ResponseEntity.ok().body("Hello! " + name);
     }
 
     @GetMapping("/loginForm")
